@@ -2,7 +2,7 @@ from tkinter import *
 
 class Gui:
 
-    def __init__(self, width: int = 500, height: int = 500, player1: str, player2: str) -> None:
+    def __init__(self, width: int = 500, height: int = 500, player1: str = "Player 1", player2: str = "Player 2") -> None:
 
         self.width = width
         self.height = height
@@ -36,7 +36,7 @@ class Gui:
     def update_text(self) -> None:
         for player in self.game.players:
             if player.id == self.game.current_player:
-                self.label["text"] = f"It's {player.nickname} turn"
+                self.label["text"] = f"It's {player.nickname}'s turn"
 
     def create_grid(self) -> None:
         self.canvas = Canvas(self.win, width=self.width, height=self.height)
@@ -89,7 +89,7 @@ class Gui:
                 self.canvas.create_text(
                     self.width/2,
                     self.height/2,
-                    text=f"{nick1} (Blacks) : {end[0]} points\n{nick2} (Whites) : {end[1]} points",
+                    text=f"{nick1} (Black) : {end[0]} points\n{nick2} (White) : {end[1]} points",
                     justify="center",
                     fill="red"
                 )
