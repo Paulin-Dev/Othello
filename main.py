@@ -2,7 +2,7 @@ from tkinter import *
 
 class Gui:
 
-    def __init__(self, width: int = 500, height: int = 500) -> None:
+    def __init__(self, width: int = 500, height: int = 500, player1: str, player2: str) -> None:
 
         self.width = width
         self.height = height
@@ -14,7 +14,7 @@ class Gui:
         self.add_text()
         self.create_grid()
 
-        self.game = Game()
+        self.game = Game(player1, player2)
 
         self.update_text()
 
@@ -36,7 +36,7 @@ class Gui:
     def update_text(self) -> None:
         for player in self.game.players:
             if player.id == self.game.current_player:
-                self.label["text"] = f"C'est à {player.nickname} de jouer"
+                self.label["text"] = f"It's {player.nickname} turn"
 
     def create_grid(self) -> None:
         self.canvas = Canvas(self.win, width=self.width, height=self.height)
@@ -89,7 +89,7 @@ class Gui:
                 self.canvas.create_text(
                     self.width/2,
                     self.height/2,
-                    text=f"{nick1} (Noirs) : {end[0]} points\n{nick2} (Blancs) : {end[1]} points",
+                    text=f"{nick1} (Blacks) : {end[0]} points\n{nick2} (Whites) : {end[1]} points",
                     justify="center",
                     fill="red"
                 )
@@ -103,7 +103,7 @@ class Gui:
         if self.game.cannot_play() and self.game.check_game_over() is None:
             for player in self.game.players:
                 if player.id == self.game.current_player:
-                    print(f"{player.nickname} ne peut plus jouer, changement de joueur")
+                    print(f"{player.nickname} can't play, player changeover")
                     self.game.next_player()
 
     def get_circle(self, pos: tuple[int, int]) -> int:
@@ -122,9 +122,9 @@ class Gui:
 
 class Game:
 
-    def __init__(self) -> None:
+    def __init__(self, p1: str, p2: str) -> None:
         self.create_grid()
-        self.create_players()
+        self.create_players(p1, p2)
         self.current_player = 1
         # black : 1, white : -1
 
@@ -147,13 +147,13 @@ class Game:
     def set_value(self, pos: tuple[int, int], value: int) -> None:
         self.grid[pos[0]][pos[1]] = value
 
-    def create_players(self) -> None:
-        self.players = [Player(1, "Bob"), Player(-1, "Jean")]
+    def create_players(self, p1: str, p2: str) -> None:
+        self.players = [Player(1, p1), Player(-1, p2)]
 
     def next_player(self) -> None:
         self.current_player *= -1
 
-    def get_enemies(self, pos: tuple[int, int]) -> int and list:
+    def get_enemies(self, pos: tuple[int, int]) -> tuple[int, list]:
         enemies = []
         for i in range(3):
             for j in range(3):
@@ -220,4 +220,4 @@ class Player:
 
 
 if __name__ == "__main__":
-    Gui(700, 700)
+    Gui(700, 700, "Bob", "Olivia")
